@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>CUSP - Web Map</title>
+
+	<link rel="stylesheet" type="text/css" href="L.Control.MousePosition.css">
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+	    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	    crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+	    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+	    crossorigin=""></script>
+
+</head>
+<body>
+
+	<!-- navigation bar at the top of the page  -->
+	<div id="navBar">
+
+		<img id="logo" src="icons/logo.png">
+		<button class="navBarElem">Home</button>
+		<button class="navBarElem">About</button>
+		<button class="navBarElem" onclick="beginTutorial()">Tutorial</button>
+		<button class="navBarElem">Contact</button>
+	</div>
+
+	<!-- navigation bar at the top of the page -->
+
+
+	<!-- tutorial message ( appears when page is first opened ) -->
+	
+	<div id="tutorialAlert">
+		<button id="closeAlert" onclick="closeTutorialAlert()">&#10005</button>
+		Would you like a tutorial? 
+		<button id="yesTutorial" onclick="beginTutorial()">Yes</button>
+		<button id="noTutorial" onclick="closeTutorialAlert()">No</button>
+	</div>
+
+	<!-- tutorial message (appears when page is first opened) -->
+
+
+	<!-- tutrial ( step 1 ) -->
+
+	<div id="stepExplanation">
+
+		<button  class="btnStepTutorial" id="btnCloseStep" onclick="endTutorial()">&#10005</button>
+		1. 
+		<ul class="list">
+  			<li>Go to the desired area on the map.</li>
+  			<li>Press the "Available LiDAR data" button to see datasets located within the map. </li>
+  			<li>Next to the name of the dataset, you will see formats that the data from that dataset is available in.</li>
+  			<li>Choose a dataset you would like to download the data from by picking between available options.</li>
+  			<li>Once you click on the name of the dataset in the contol panel, you will see the location of the dataset on the map in blue.</li>
+		</ul> 
+		<button class="btnNextStep" id="btnStep2" onclick="step2()">Next &#9656</button>
+
+	</div>
+
+	<!-- tutrial ( step 1 ) -->
+
+
+	<!-- purple separator of the navigation bar and the map -->
+
+	<div id="separator">Choose a data set and select an area of interest to download and view LiDAR data</div>
+
+	<!-- separator of the navigation bar and the map -->
+
+
+	<!-- vertical button on the far left used to open the side bar -->
+
+	<button class="btnOpenClose" id="btnOpen" onclick="openCloseNav()" title="Expand Side Panel"> &#9658; </button>
+
+	<!-- vertical button on the far left used to open the side bar -->
+
+
+	<!-- div holding the leaflet map -->
+
+	<div id="map"></div>
+
+	<!-- div holding the leaflet map -->
+
+	<!-- side bar on the left -->
+
+	<div id="sideNav">
+		
+		<div id="holder">
+
+			<button class="btnTitle" id="btnAvailableData" onclick="showAvailableData()">Available LiDAR data </button>
+
+			<div id="availableOptionsHolder"></div>
+
+			<button class="btnTitle" id="btnSelectArea" onclick="showShapeOptions()">Select area of interest</button>
+
+		    <div id="selectAreaOptions">
+
+		    	<button class="btnOption btnDraw open2" onclick="showDrawSection()" id='btnDrawShape'>Draw shape</button>
+		    	<button class="btnOption btnUpload" onclick="showUploadSection()" id='btnUploadShape'>Upload shape</button>
+		    	
+		    	<div id='drawShapeSection'>
+
+			    	<button class="btnOption btnRecShape open" onclick="recOpenClose()" id="recOpenClose">Rectangle</button>
+
+			    	<button class="btnOption btnPolyShape closed" onclick="polyOpenClose()" id="polyOpenClose">Polygon</button>
+			    	<button class="btnTitle btnHelp" id="btnHelp" onclick="showHelp()">&#63</button>
+			    	<!-- Rectangle coordinates underneath the rectangle button -->
+			    	<div id="recCoordinates" class="section"> 
+
+			    		<button class="btnOption btnNewShape" onclick="drawRectangle()" id="btnNewRectangle">+ New Rectangle</button>
+
+			    		<button class="btnOption btnDelShape" onclick="delRectangle()" id="btnDelRec">- Delete</button>
+			    		<button class="btnMarker btnDownloadShape" onclick="downloadGeoJSON()" id="downloadRec">&#8595 Download</button>
+						<br>
+
+						<hr class = "line">
+
+			    		<button class="btnPoint"> Top-left point </button>
+			    		<button class="btnMarker" onclick="showPt('TL')" id = "btnMarkerTL"> + Marker </button>
+			    		<button class="btnRecLatLon">Lat:</button>
+			    		<input type="text" name="latName" class="inputRecCoord" id="latTopLeft" onchange="changeRecLoc()">
+			    		<button class="btnRecLatLon">Lon:</button>
+			    		<input type="text" name="lngName" class="inputRecCoord" id="lngTopLeft" onchange="changeRecLoc()">
+
+			    		<hr class = "line">
+
+			    		<button class="btnPoint" > Bottom-right point </button>
+			    		<button class="btnMarker" onclick="showPt('BR')" id = "btnMarkerBR"> + Marker </button>
+			    		<button class="btnRecLatLon">Lat:</button>
+			    		<input type="text" name="latName" class="inputRecCoord" id="latBottomRight" onchange="changeRecLoc()">
+			    		<button class="btnRecLatLon">Lon:</button>
+			    		<input type="text" name="lngName" class="inputRecCoord" id="lngBottomRight" onchange="changeRecLoc()">
+
+			    	</div>
+
+			    	<div id = "polyCoordinates" class = "section">
+			    		<button class = "btnOption btnNewShape" onclick = "drawPolygon()" id = "btnNewPolygon" >+ New Polygon</button>
+			    		<button class = "btnOption btnDelShape" onclick = "delPolygon()" id = "btnDelPoly">- Delete</button>
+
+			    		<button class="btnMarker btnDownloadShape" onclick="downloadGeoJSON()" id="downloadPoly">&#8595 Download</button>
+			    	
+			    	<div id="pointHolder"></div>
+
+			    	<hr class = "line">
+
+			    	<button class = "btnOption btnAddPoint" onclick = "addPoint(1)">+ Add Point</button>
+
+			    	</div>
+
+			    </div>
+
+			    <div id="uploadShapeSection">
+	
+  						<label class="btnMarker btnInputFile" id="inputFile"><input type="file" id="geoJSONUpload" onchange="uploadChange()">Select File</label>
+  						<button class="btnMarker btnShowShape" onclick="uploadGeoJSON()"id="btnShowGeoJSON">Show</button>
+  						<button class="btnMarker btnDownloadUpload" onclick="downloadGeoJSON()" id="downloadUpload">&#8595 Download</button>
+  						<br><br>
+  						<label class="labelUpload" id="uploadInfo"></label>
+  						<div id="uploadedShapePtHolder"></div>
+  						<hr class = "line2">
+  						<button class = "btnOption btnAddPoint" onclick = "addPoint(2)" id="uploadedShapeAddPt">+ Add Point</button>
+			    </div>
+
+			    <a id="aDownload"></a>
+			    
+		    </div>
+
+		    <!-- switching from showData() to showRetrievalOptions() for testing -->
+			<button class="btnTitle" id="btnLiDARdata" onclick="showRetrievalOptions()">Download LiDAR Data</button>
+
+			<div id="optionsHolder"></div>
+
+			<div id="retrievalOptionsHolder">
+
+				
+				<button class="btnRetrievalOpt" onclick="ocSection('1')" id="btnOCSec1">Projection, Datum, and Unit options</button>
+
+				<div class="retrievalOptions" id="section1">
+					
+					Projection:
+					<select class="selectOptions">
+						<option>Geographic (Lat/Lon)</option>
+						<option>UTM</option>
+						<option>Albers CONUS/USGS</option>
+						<option>State Plane 1927</option>
+						<option>State Plane 1983</option>
+					</select><br>
+
+					<hr class="line3">
+
+					Datum: 
+					&nbsp Horizontal: 
+					<select class="selectOptions">
+						<option>NAD83</option>
+					</select><br>
+					&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp Vertical: 
+					<select class="selectOptions">
+						<option>NAVD88</option>
+						<option>GRS80/NAD83 Ellipsoid</option>
+						<option>NGVD29</option>
+					</select><br>
+
+					<hr class="line3">
+
+					Units: 
+					&nbsp Horizontal: 
+					<select class="selectOptions">
+						<option>Feet</option>
+						<option>Meters</option>
+					</select><br>
+					&nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp Vertical: 
+					<select class="selectOptions">
+						<option>Feet</option>
+						<option>Meters</option>
+					</select><br>
+				</div>
+
+			<button class="btnRetrievalOpt" onclick="ocSection('2')" id="btnOCSec2">Output options</button>
+
+			<div class="retrievalOptions" id="section2">
+
+					Output Product: 
+					<select class="selectOptions" onchange="showFurtherOptions()" id="productSelect">
+						<option>Point</option>
+						<option>Contour</option>
+						<option>Raster</option>
+					</select><br>
+
+					<div id="pointOptionsHolder" class="outputProductOptions">
+						
+						Output format: 
+						<select class="selectOptions">
+							<option>LAZ</option>
+							<option>LAS</option>
+							<option>ASCII</option>
+						</select><br>
+						
+						<hr class="line3">
+
+						DEM Generation (TIN): <br><br>
+
+						&nbsp&nbsp Gridding Method: <input type="checkbox" class="gridCheckbox"> <label>Calculate TIN</label>
+						<br><br>
+
+						&nbsp&nbsp Gridding Parameters: <br>
+						&nbsp&nbsp&nbsp&nbsp Grid resolution (default 1 meter) <input type="number" class="gridInput" value="1"><br>
+						&nbsp&nbsp&nbsp&nbsp Max. triangle size (default 50 units) <input type="number" class="gridInput" value="50">
+						<br>
+						<br>
+
+						&nbsp&nbsp Grid Format:
+						<select class="selectOptions">
+							<option>GeoTiiff</option>
+							<option>IMG</option>
+							<option>Arc ASCII Grid</option>
+						</select>
+
+						<hr class="line3">
+
+						Derivative products: <br><br>
+						<input type="checkbox" class="checkboxOptions"><label>Generate hillshade and slope grids </label>
+						<select class="selectOptions">
+							<option>GeoTiff</option>
+							<option>IMG</option>
+						</select>
+
+					</div>
+
+					<div id="contourOptionsHolder" class="outputProductOptions">
+						
+						Output format: 
+						<select class="selectOptions">
+							<option>DXF</option>
+							<option>Shapefile</option>
+						</select><br>
+
+						<hr class="line3">
+
+						Contour format: 
+						<select class="selectOptions">
+							<option>Interval</option>
+							<option>Single Elevation</option>
+						</select><br>
+
+						<input type="number" class="numberInput"> feet
+
+					</div>
+
+					<div id="rasterOptionsHolder" class="outputProductOptions">
+
+						Output format: 
+						<select class="selectOptions">
+							<option>GeoTiff 32-bit</option>
+							<option>Imagine</option>
+							<option>ASCII</option>
+							<option>Floatnig Pt.</option>
+						</select><br>
+
+						<hr class="line3">
+
+						Grid method: 
+						<select class="selectOptions">
+							<option>Average</option>
+							<option>IDW</option>
+							<option>Maximum</option>
+							<option>Minimum</option>
+							<option>Spline</option>
+							<option>TIN</option>
+						</select><br>
+						<br>
+
+						Grid size (in feet): <input type="number"> <br>
+						<hr class="line3">
+						Layer types and additional SRTM data: <br><br>
+						&nbsp &nbsp <input type="checkbox" class="checkboxOptions"><label>Digital Terrain Model (DTM)</label><br>
+						&nbsp &nbsp <input type="checkbox" class="checkboxOptions"><label>Include Global 30m SRTM data</label>
+
+					</div>
+				</div>
+
+				
+				<button class="btnRetrievalOpt" onclick="ocSection('3')" id="btnOCSec3">Data options</button>
+
+				<div class="retrievalOptions" id="section3">
+
+					Data classes: <br>
+					
+					&nbsp&nbsp&nbsp<input type="checkbox" class="checkboxOptions">All <br>
+					&nbsp&nbsp&nbsp<input type="checkbox" class="checkboxOptions">Ground <br>
+					&nbsp&nbsp&nbsp<input type="checkbox" class="checkboxOptions">Unclassified <br>
+					&nbsp&nbsp&nbsp<input type="checkbox" class="checkboxOptions">Low point (noise) <br>
+					&nbsp&nbsp&nbsp<input type="checkbox" class="checkboxOptions">Water <br>
+					&nbsp&nbsp&nbsp<input type="checkbox" class="checkboxOptions">Ignored ground (near breakline) <br>
+					&nbsp&nbsp&nbsp<input type="checkbox" class="checkboxOptions">Overlap default <br>
+					&nbsp&nbsp&nbsp<input type="checkbox" class="checkboxOptions">Overlap ground <br>
+				</div>
+				
+				<button class="btnRetrievalOpt" onclick="ocSection('4')" id="btnOCSec4">Visualization options</button>
+				
+				<div class="retrievalOptions" id="section4">
+
+					Generate: 
+					<form class="formOptions">
+					  <input class="checkboxOptions" type="checkbox" name="check1" value="">
+					  <label for="check1"> Hillshade images from DEMs</label><br>
+					  <input class="checkboxOptions" type="checkbox" name="check2" value="Car">
+					  <label for="check2"> Additional color-relief and colored hillshades</label><br>
+					  <input class="checkboxOptions" type="checkbox" name="check3" value="Boat">
+					  <label for="check3"> Additional Google Earth KMZ files</label><br><br>
+					</form>
+
+					Altitude of lights (0-90 degrees): <input class="numberInput" type="number" min="0" max="90"> <br>
+					Azimuth of light (0-360 degrees): <input class="numberInput" type="number" min="0" max="360"> <br>
+				</div>
+				<button class="btnMarker btnDownload">Download</button>
+
+			</div>
+
+		    <button class="btnTitle" id="btnViewLiDARData" onclick="viewPointData()">View LiDAR Data</button>
+
+		    <form id="the-form" action="https://api.sketchfab.com/v2/models" enctype="multipart/form-data">
+
+			    <p>Upload model file:</p>
+			    <input name="modelFile" type="file" id="file" class="inputfile" data-multiple-caption="{count} files selected" multiple/>
+			    <label for="file">Choose file</label>
+
+			    <p>API Token:</p>
+			    <input name="token" type="text">
+
+			    <p>Model name:</p>
+			    <input name="name" type="text">
+
+			    <p>Model description:</p>
+			    <input name="description" type="text">
+
+			    <p>Tags (space separated):</p>
+			    <input name="tags" type="text">
+
+			    <p>Private? (Pro only) <input name="private" type="checkbox" value="1"></p>
+
+			    <p>Password (Pro only):</p>
+			    <input name="password" type="password">
+
+			    <br>
+			    <br>
+			    <input name="Submit" type="submit" class="btnForm">
+			    <br>
+			    <p id="pStatus">Status: </p><p id="status"></p>
+ 
+			</form>
+
+		  	 
+  		</div>
+
+  		<button class="btnOption" id="btnModelMap" onclick="showModelorMap()">Show 3D model</button>
+
+	</div>
+	<button class="btnOpenClose" id="btnClose" onclick="openCloseNav()">&#9668;</button>
+
+	<!-- side bar on the left -->
+
+
+	<div id="model"></div>
+
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+		integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+		crossorigin=""></script>
+	<script src="Leaflet.Editable.js"></script>
+	<script>
+
+		function ocSection(number) {
+			if(get('section' + number).style.display == "none") {
+				get('section' + number).style.display = "block";
+				get('btnOCSec' + number).classList.remove('btnRetrievalOptActive');
+			}
+			else {
+				get('section' + number).style.display = "none";
+				get('btnOCSec' + number).classList.add('btnRetrievalOptActive');
+			}
+		}
+
+		function closeAllFurtherOptions() {
+			get('pointOptionsHolder').style.display = "none";
+			get('contourOptionsHolder').style.display = "none";
+			get('rasterOptionsHolder').style.display = "none";
+		}
+
+		function showFurtherOptions() {
+			var product = get('productSelect').value;
+			closeAllFurtherOptions();
+			if(product == 'Point') {
+				get('pointOptionsHolder').style.display = "block";
+			}
+			else if (product == "Contour") {
+				get('contourOptionsHolder').style.display = "block";
+			}
+			else {
+				get('rasterOptionsHolder').style.display = "block";
+			}
+		}
+
+		function showRetrievalOptions() {
+			if(get("retrievalOptionsHolder").style.display == "block") {
+				get("retrievalOptionsHolder").style.display = "none";
+			}
+			else get("retrievalOptionsHolder").style.display = "block";
+		}
+
+		function uploadChange() {
+			get('inputFile').classList.add('btnInputFileActive');
+			get('btnShowGeoJSON').innerHTML = "Show";
+	        get('btnShowGeoJSON').onclick = function() { uploadGeoJSON(); }
+			var upload = get('geoJSONUpload');
+			var txt = ""; 
+			if('files' in upload) {
+				if(upload.files.length != 0) {
+					if('name' in upload.files[0]) txt += "Name: " + upload.files[0].name + "<br>";
+					
+					if('size' in upload.files[0]) txt += "Size: " + upload.files[0].size + " bytes";
+				}
+			}
+			else{
+				if(x.value != "") {
+					txt += "The files property iis not supported by your browser.";
+				}
+			}
+			get('uploadInfo').innerHTML = txt;
+			get('uploadInfo').style.display = "block";
+			get('uploadInfo').style.color = "#505050";
+			get('btnShowGeoJSON').style.display = "block";
+			get('downloadUpload').style.display = "block";
+
+		}
+
+		function showUploadSection() {
+			get('uploadShapeSection').style.display = 'block';
+			get('drawShapeSection').style.display = 'none';
+			get('btnDrawShape').classList.remove('open2');
+			get('btnUploadShape').classList.add('open2');
+		}
+
+		function showDrawSection() {
+			get('uploadShapeSection').style.display = 'none';
+			get('drawShapeSection').style.display = 'block';
+			get('btnDrawShape').classList.add('open2');
+			get('btnUploadShape').classList.remove('open2');
+		}
+
+		function uploadGeoJSON() {
+
+				deleteUpload();
+			
+				var upload = get('geoJSONUpload');
+	            var fr = new FileReader(); 
+	            fr.onload = function() { 
+	            	try {
+	            		var geoJSONFeature = JSON.parse(fr.result);
+	            		
+	            		var bounds = geoJSONFeature.features[0].geometry.coordinates[0];
+
+	            		for(i = 0; i < bounds.length; i++){
+	            			var help = bounds[i][0];
+	            			bounds[i][0] = bounds[i][1];
+	            			bounds[i][1] = help;
+	            		}
+
+	            		bounds.pop();
+
+	            		clearMap();
+	            		deleteRecMarkers();
+	            		deletePolyMarkers();
+	            		clearRecView();
+	            		clearPolyView();
+
+	            		polygon = map.editTools.createPolygon(bounds).on('editable:vertex:new',function() {vertexAdd(2)}).on('editable:vertex:deleted', function() {vertexDel(2)}).on('editable:drag',function() {dragPoly(2)}).on('editable:vertex:drag', function() {dragVertex(2)}).on('editable:vertex:dragend', function() {dragVertex(2)}).setStyle({color: "black", weight: 2}).addTo(layer).enableEdit();
+
+	            		for(i = 0; i < bounds.length; i++){
+	            			addPoint(2);
+	            			var num = i + 1;
+	            			get('latInput' + num).value = bounds[i][0];
+	            			get('lngInput' + num).value = bounds[i][1];
+	            			updateMarker(num, bounds[i][0], bounds[i][1]);
+	            		}
+
+	            		rememberCoords();
+
+	                	get('btnShowGeoJSON').innerHTML = "Delete";
+	                	get('btnShowGeoJSON').onclick = function() {deleteUpload(); }
+	                	get('uploadedShapeAddPt').style.display = "block";
+	            	}
+	            	catch(error) {
+	            		window.alert("Something went wrong! \nPlease choose a GeoJSON file and try again.");
+	            		deleteUpload();
+	            	}
+	            	
+	            } 
+	              
+	            fr.readAsText(upload.files[0]); 
+        	
+		}
+
+		function deleteUpload() {
+			clearMap();
+			get('btnShowGeoJSON').innerHTML = "Show";
+	        get('btnShowGeoJSON').onclick = function() { uploadGeoJSON(); }
+	        while(get('uploadedShapePtHolder').firstChild) {
+	        	get('uploadedShapePtHolder').removeChild(get('uploadedShapePtHolder').firstChild);
+	        }
+	        deletePolyMarkers();
+	        get('uploadedShapeAddPt').style.display = "none";
+	        polygon = 0;
+		}
+
+		function changeMargin(name) {
+			var topPos = parseInt(get(name).getBoundingClientRect().top) - 110;
+			get('stepExplanation').style.marginTop = topPos + 'px';
+		}
+
+		function closeTutorialAlert() {
+			get("tutorialAlert").style.display = "none";
+		}
+
+		var step1Content = '<button  class="btnStepTutorial" id="btnCloseStep" onclick="endTutorial()">&#10005</button>1. <ul class="list"><li>Go to the desired area on the map.</li><li>Press the "Available LiDAR data" button to see datasets located within the map. </li><li>Next to the name of the dataset, you will see formats that the data from that dataset is available in.</li><li>Choose a dataset you would like to download the data from by picking between available options.</li><li>Once you click on the name of the dataset in the contol panel, you will see the location of the dataset on the map in blue.</li></ul> <button class="btnNextStep" id="btnStep2" onclick="step2()">Next &#9656</button>';
+
+		function removeTutorialActive() {
+			get("btnAvailableData").classList.remove('tutorialActive');
+			get('btnSelectArea').classList.remove('tutorialActive');
+			get('btnLiDARdata').classList.remove('tutorialActive');
+			get('btnViewLiDARData').classList.remove('tutorialActive');
+		}
+
+		function setUpChangeMargin (step) {
+			get('sideNav').onscroll = function() {changeMargin(step);
+			};
+
+			get('sideNav').onchange = function() {changeMargin(step);
+			};
+
+			get('sideNav').onclick = function() {changeMargin(step);
+			};
+		}
+
+		function goToBegining () {
+			get('stepExplanation').style.height = "350px";
+			changeMargin('btnAvailableData');
+			get('stepExplanation').innerHTML = step1Content;
+			setUpChangeMargin('btnAvailableData');
+			removeTutorialActive();
+		}
+
+		function endTutorial() {
+
+			get('stepExplanation').style.display = 'none';
+			goToBegining();
+		}
+
+		function step1() {
+			
+			goToBegining();
+			get("btnAvailableData").classList.add('tutorialActive');
+		}
+
+		function beginTutorial() {
+
+			if(get('stepExplanation').style.display == 'block') return;
+			get("tutorialAlert").style.display = "none";
+
+			get("btnOpen").style.display = "none";
+			get("sideNav").style.width = "350px";
+
+			get("btnAvailableData").classList.add('tutorialActive');
+
+			get('stepExplanation').style.display = 'block';
+
+			setUpChangeMargin('btnAvailableData');
+		}
+
+		function step2() {
+
+			removeTutorialActive();
+			get('btnSelectArea').classList.add('tutorialActive');
+			get('stepExplanation').style.height = "470px";
+
+			changeMargin('btnSelectArea');
+
+			get('stepExplanation').innerHTML = '<button  class="btnStepTutorial" id="btnCloseStep" onclick="endTutorial()">&#10005</button>2. <ul class="list"><li>Press "Select area of interest" button to draw the area of interest on the map or upload the desired area onto the map. </li><li>If drawing the shape on the map, choose between rectangle and polygon and draw the shape on the map.</li><li> You can modify the shape directly on the map or by using tools in the control panel. </li><li>Press "?" button to see commands for shape modification from the map.</li><li>If you wish to upload the desired shape, choose a GeoJSON file from your computer and upload it.</li><li>Shape modification options can be used for the uploaded shape too.</li><li>Any shape on the map can be downloaded in the GeoJSON format by clicking the "Download" button.</li></ul><button class="btnPrevious" onclick="step1()">&#9666 Back</button><button class="btnNextStep" id="btnStep3" onclick="step3()">Next &#9656</button>';
+
+			setUpChangeMargin('btnSelectArea');
+		}
+
+		function step3() {
+
+			removeTutorialActive();
+			get('btnLiDARdata').classList.add('tutorialActive');
+
+			get('stepExplanation').style.height = "290px";
+
+			changeMargin('btnLiDARdata');
+
+			get('stepExplanation').innerHTML = '<button  class="btnStepTutorial" id="btnCloseStep" onclick="endTutorial()">&#10005</button>3. <ul class="list"><li>Press "Download LiDAR data" button to download point cloud data onto your computer. </li><li> Choose the format you would like to download the data in.</li><li> Press on desired format to save file on your computer. </li><li> The data corresponding to the previously drawn area of interest will be retrieved.</li></ul><button class="btnPrevious" onclick="step2()"> &#9666 Back</button><button class="btnNextStep" id="btnStep4" onclick="step4()">Next &#9656</button>';
+
+				setUpChangeMargin('btnLiDARdata');
+		}
+
+		function step4() {
+
+			removeTutorialActive();
+			get('btnViewLiDARData').classList.add('tutorialActive');
+
+			get('stepExplanation').style.height = "380px";
+
+			changeMargin('btnViewLiDARData');
+
+			get('stepExplanation').innerHTML = '<button  class="btnStepTutorial" id="btnCloseStep" onclick="endTutorial()">&#10005</button>4. <ul class="list"><li>Press "View LiDAR Data" button to view a 3D model of you point cloud data. </li><li>Note that you need to have a Sketchfab account.</li><li> Upload the desired file and input the file name and your Sketchfab API token.</li><li> If desired, fill out any other fields.</li><li> Submit the file and wait to see "Success" status.</li><li> Press "Show 3D model" to view the data. </li><li>The model will be uploaded to you Sketchfab account under the name you previously indicated. </li></ul><button class="btnPrevious" onclick="step3()">&#9666 Back</button><button  class="btnNextStep" id="btnEnd" onclick="endTutorial()">End</button>';
+
+			setUpChangeMargin('btnViewLiDARData');
+		}
+
+		var inputs = document.querySelectorAll( '.inputfile' );
+		Array.prototype.forEach.call( inputs, function( input ) {
+			var label	 = input.nextElementSibling,
+				labelVal = label.innerHTML;
+			input.addEventListener( 'change', function( e ) {
+				var fileName = '';
+				if( this.files && this.files.length > 1 )
+					fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+				else
+					fileName = e.target.value.split( '\\' ).pop();
+				if (fileName)
+					label.innerHTML = fileName;
+				else
+					label.innerHTML = labelVal;
+			});
+		});
+	</script>
+	<script>
+
+		var last_project;
+
+		var get = function(id) { return document.getElementById(id); };
+
+		function openCloseNav() {	    	
+	    
+			get("btnOpen").style.display = ( get("btnOpen").style.display == "none" ) ? "block" : "none";
+			get("sideNav").style.width = (get("sideNav").style.width == "350px") ? "0" : "350px";
+			get("btnClose").style.display = ( get("btnClose").style.display == "block" ) ? "none" : "block";
+			endTutorial();
+		}
+
+		function showShapeOptions() {
+			get("selectAreaOptions").style.display = (get("selectAreaOptions").style.display == "block") ? "none" : "block";
+			if (get("btnSelectArea").classList.contains("active"))
+				get("btnSelectArea").classList.remove("active");
+			else get("btnSelectArea").classList.add("active");
+			get("btnHelp").style.display = (get("btnHelp").style.display == "block") ? "none" : "block";
+		}
+
+		function showAvailableData() {
+			var container = get("availableOptionsHolder");
+			if (container.style.display == "block") {
+				container.style.display = "none";
+				get("btnAvailableData").classList.remove("active");
+				while (container.firstChild != null) {
+					container.removeChild(container.firstChild);
+				}
+			}
+			else {
+				var bounds = map.getBounds();
+				var northEast = bounds.getNorthEast(),
+					southWest = bounds.getSouthWest();
+				var latcenter = (southWest.lat + northEast.lat)/2;
+				var lngcenter = (northEast.lng + southWest.lng)/2;
+
+				const projectsRequest = new XMLHttpRequest();
+				var projectsRequestUrl; // no url available
+	
+				projectsRequest.open("GET", projectsRequestUrl);
+				projectsRequest.send();
+
+				projectsRequest.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var response = JSON.parse(projectsRequest.responseText);
+						if (response.features == null) {
+							var label = document.createElement("label");
+							label.className = 'labelNoData';
+							label.innerHTML = "There is no data available in this region";
+							container.appendChild(label);
+							container.style.display = "block";
+							return;
+						}
+						response = response.features;
+						var count = response.length;
+						for (i = 0; i < count; i++) {
+							var project = response[i].properties.project_name;
+							var btn = document.createElement("button");
+							btn.className = 'btnScan';
+							btn.innerHTML = project;
+							btn.id = project;
+							btn.onclick = function() {selectProject(this.id)}
+							container.appendChild(btn);
+							var labelFormats = document.createElement("label");
+							labelFormats.innerHTML = "Formats:";
+							labelFormats.className = "formats";
+							labelFormats.id = project + "Formats";
+							showFormats(labelFormats.id);
+							container.appendChild(labelFormats);
+						}
+					}
+				}
+				container.style.display = "block";
+				get("btnAvailableData").classList.add("active");
+			}
+		}
+
+		function showFormats(id) {
+			var project = id.slice(0,-7);
+			const formatsRequest = new XMLHttpRequest();
+			var formatsRequestUrl; // no url available
+
+			formatsRequest.open("GET", formatsRequestUrl);
+			formatsRequest.send();
+
+			formatsRequest.onreadystatechange = function() {
+				if(this.readyState == 4 && this.status == 200){
+					var response = JSON.parse(formatsRequest.responseText);
+					response = response.DATA_COMPONENTS;
+					var count = response.length;
+					var container = get("availableOptionsHolder");
+					var before = get(id);
+					before = before.nextSibling;
+					var formatsHolder = document.createElement("div");
+					formatsHolder.className = "formatsHolder";
+					formatsHolder.innerHTML = "";
+					formatsHolder.id = project + "FormatsHolder";
+
+					for (j = 0; j < count; j++){
+						if (j != count - 1)
+							formatsHolder.innerHTML += response[j] + "<br><br>";
+						else formatsHolder.innerHTML += response[j];
+					}
+					container.insertBefore(formatsHolder, before);
+				}
+			}
+		}
+		var prevlayer = false;
+
+		function selectProject(id) {
+
+			window.last_project = id;
+
+			const requestEnvelope = new XMLHttpRequest();
+			var requestEnvelopeUrl; // no url available
+			
+			requestEnvelope.open("GET", requestEnvelopeUrl);
+			requestEnvelope.send();
+
+			requestEnvelope.onreadystatechange = function() {
+				if(this.readyState == 4 && this.status == 200) {
+					if (prevlayer != false) {
+						map.removeLayer(prevlayer);
+						layer.eachLayer(function(layereach){layer.removeLayer(layereach);});
+					}
+					var response = JSON.parse(requestEnvelope.responseText);
+					var layerStyle = {
+						"color": "#0066CC",
+						"weight": 2,
+						"opacity": 0.1
+					};
+					prevlayer = L.geoJSON(response, {style: layerStyle}).addTo(map);
+				}
+			}
+			showData(last_project);
+			showData(last_project);
+			var container = get("availableOptionsHolder");
+			var child = container.firstChild;
+			while (child != null) {
+				child.classList.remove("active");
+				child = child.nextSibling;
+			}
+			get(id).classList.add("active");
+		}
+
+		function showModelorMap() {
+			if (resulturl != null) {
+				var str = '<iframe width="100%" height="100%" src="'+resulturl+'/embed" frameborder="0" allow="autoplay; fullscreen; vr" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
+				get("model").innerHTML = str;
+				get("map").style.display = (get("map").style.display == "none") ? "block" : "none";
+				get("model").style.display = (get("model").style.display == "block") ? "none" : "block";
+				get("btnModelMap").innerHTML = (get("btnModelMap").innerHTML == "Show 3D model") ? "Show map" : "Show 3D model";
+			}
+		}
+	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="FileSaver.js"></script>
+	<script src="L.Control.MousePosition.js"></script>
+	<script src="Leaflet.Editable.js"></script>
+	<script src="Path.Drag.js"></script>
+
+	<script>
+		/* get HTML object based on id*/
+		var get = function(id) {return document.getElementById(id);};
+		/* get value of HTML object */
+		var val = function(id) {return get(id).value;};
+		/*sett value of HTML object */
+		function setVal(id, val) { get(id).value = val;}
+
+		var rectangle;
+
+		/* add Leaflet map */
+		var map = L.map('map',{editable:true, zoomControl: false}).setView([53.344022,-6.25972],17);
+
+		L.control.zoom({position:'topright'}).addTo(map);
+		L.control.scale({position:'bottomright'}).addTo(map);
+
+		var tileLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+		/* add mouse posiition on map */
+		var position = L.control.mousePosition({position:'bottomright'});
+		position.addTo(map);
+
+		/* layer containing shape on the map*/
+		/* used for getting GeoJSON for data retrieval */
+		var layer = L.layerGroup();
+		layer.addTo(map);
+
+	    function saveText(text, filename){
+		  var a = document.createElement('a');
+		  a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(text));
+		  a.setAttribute('download', filename);
+		  a.click()
+		}
+
+		/*deletes all shapes from map */
+		function clearMap() {
+        	layer.eachLayer(function(layereach){layer.removeLayer(layereach);});
+		}
+
+		/* delete everything from rectangle view*/
+		function clearRecView() {
+			/* cleat input boxes */
+			setVal('latTopLeft', '');
+        	setVal('lngTopLeft', '');
+        	setVal('latBottomRight', '');
+        	setVal('lngBottomRight', '');
+
+    		/* hide "- Delete" button */
+        	get("btnDelRec").style.display = "none";
+        	get('downloadRec').style.display = "none";
+        	get('btnNewRectangle').classList.remove('btnNew');
+    		get('btnNewRectangle').classList.add('btnNewShape');
+    		get('btnNewRectangle').innerHTML = "+ New Rectangle";
+		}
+
+		/* delete all points from poly view */
+		function clearPolyView() {
+        	/* div that hold points */
+        	var coordsContainer = get("pointHolder");
+
+    		/* delete all points from div */
+    		while (coordsContainer.firstChild != null) {
+				coordsContainer.removeChild(coordsContainer.firstChild);
+			}
+
+			/* hide "- Delete" button */
+        	get("btnDelPoly").style.display = "none";
+        	get('downloadPoly').style.display = "none";
+        	get('btnNewPolygon').classList.remove('btnNew');
+    		get('btnNewPolygon').classList.add('btnNewShape');
+    		get('btnNewPolygon').innerHTML = "+ New Polygon";
+		}
+
+		/* remove both rectangle markers from map*/
+		function deleteRecMarkers() {
+
+			map.removeLayer(markerTL);
+	        map.removeLayer(markerBR);
+
+	        get("btnMarkerTL").innerHTML = " + Marker";
+	        get("btnMarkerBR").innerHTML = " + Marker";
+		}
+
+		/* remove all polygon markers from map*/
+		function deletePolyMarkers() {
+			
+    		polyMarkers.forEach(function delMarker(entry){
+        		map.removeLayer(entry[0]);
+        	});
+        	polyMarkers = [];
+		}
+
+		/* called when any shape is deleted from map */
+		var deleteShape = function (e) {
+	      if ((e.originalEvent.ctrlKey || e.originalEvent.metaKey) && this.editEnabled()) 
+	      	{
+	      		/*remove shape from map */
+	      		layer.removeLayer(this);
+	      		this.editor.deleteShapeAt(e.latlng);
+
+	      		clearRecView();
+	      		clearPolyView();
+
+	    		deletePolyMarkers();
+	        	deleteRecMarkers();
+	      	}
+	    };
+
+	    map.on('layeradd', function (e) {
+	        if (e.layer instanceof L.Path) 
+	        	e.layer.on('click', L.DomEvent.stop).on('click', deleteShape, e.layer);
+	    
+	        if (e.layer instanceof L.Path) e.layer.on('dblclick', L.DomEvent.stop).on('dblclick', e.layer.toggleEdit);
+	    });
+
+
+	    /* icon for marker */
+	    var myIcon = L.icon({
+			    		iconUrl: 'icons/pin.png',
+					    iconSize: [24, 24],
+					    iconAnchor: [12,24],
+					    popupAnchor: [0, -24]
+					});
+
+	    /* two markers for two points in the rectangle option */
+	    var markerTL = L.marker([0,0],{icon: myIcon});
+	    var markerBR = L.marker([0,0],{icon: myIcon});
+
+	    var customOptions = {
+    		'className' : 'popupCustom'
+	    };
+
+	    /*popups for the two markers for the rectangle */
+	    var popupTL = L.popup(customOptions);
+		markerTL.bindPopup(popupTL);
+
+		var popupBR = L.popup(customOptions);
+		markerBR.bindPopup(popupBR);
+
+		/* an array of markers for the polygon */
+		var polyMarkers = [];
+
+		/* called to show/hide marker for top-left or bottom-right point in rectangle */
+		function showPt(TL_BR) {
+			if(TL_BR == "TL") var marker = markerTL;
+			else var marker = markerBR;
+			if(!map.hasLayer(marker)) {
+	    		marker.addTo(map);
+	    		get("btnMarker" + TL_BR).innerHTML = " - Marker";
+	    	}
+	    	else {
+	    		map.removeLayer(marker);
+	    		get("btnMarker" + TL_BR).innerHTML = " + Marker";
+	    	}
+		}
+
+	    /* show/hide the div with rectangle points */
+	    function recOpenClose() {
+
+	    	if(get("recCoordinates").style.display == "none"){
+	    		get("recCoordinates").style.display = "block";
+	    		get("recOpenClose").classList.add("open");
+	    		get("recOpenClose").classList.remove("closed");
+	    		get("polyCoordinates").style.display = "none";
+	    		get("polyOpenClose").classList.remove("open");
+	    		get("polyOpenClose").classList.add("closed");
+	    		get("pointHolder").style.display = "none";
+	    	}
+	    }
+
+	    function polyOpenClose() {
+
+        	/* hide poly control panel */
+        	if(get("polyCoordinates").style.display == "block"){}
+        	/* show poly control panel */
+        	else{
+        		get("polyCoordinates").style.display = "block";
+        		get("polyOpenClose").classList.add("open");
+        		get("polyOpenClose").classList.remove("closed");
+        		get("pointHolder").style.display = "block";
+        		get("recCoordinates").style.display = "none";
+        		get("recOpenClose").classList.remove("open");
+        		get("recOpenClose").classList.add("closed");
+        	}
+        }
+
+        function updateRecMarker(lat, lng, TL_BR) {
+        	/* change coords and popup content for markers */
+        	if(TL_BR == 'TL') {
+				markerTL.setLatLng([lat,lng]);
+		    	popupTL.setContent("Top-left point <br/>" + lat + " : " + lng);
+        	}
+        	else {
+				markerBR.setLatLng([lat,lng]);
+		    	popupBR.setContent("Bottom-right point <br/>" + lat + " : " + lng);
+        	}
+        }
+
+	    /* updates values in input boxes when rectangle is modified */
+	    function changeInput() {
+    		try {
+
+    			/*find max and min lat and lng */
+    			var latTop = Math.max(rectangle.getLatLngs()[0][1].lat, rectangle.getLatLngs()[0][3].lat);
+    			var latBot = Math.min(rectangle.getLatLngs()[0][1].lat, rectangle.getLatLngs()[0][3].lat);
+
+    			var lngLeft = Math.min(rectangle.getLatLngs()[0][1].lng, rectangle.getLatLngs()[0][3].lng);
+    			var lngRight = Math.max(rectangle.getLatLngs()[0][1].lng, rectangle.getLatLngs()[0][3].lng);
+
+    			/* assign lat/lng values to input boxes */
+    			setVal("latTopLeft", latTop);
+    			setVal("lngTopLeft", lngLeft);
+    			setVal("latBottomRight", latBot);
+    			setVal("lngBottomRight", lngRight);
+
+        		updateRecMarker(latTop, lngLeft, 'TL');
+        		updateRecMarker(latBot, lngRight, 'BR');
+			}
+			catch { console.log("an exception has been cought"); }
+    	}
+
+    	/* called when user wants to start drawing a new rectangle */
+        function drawRectangle(e) {
+
+        	clearMap();
+
+        	clearRecView();
+        	clearPolyView();
+
+        	deletePolyMarkers();
+        	deleteRecMarkers();
+        	deleteUpload();
+
+        	get('btnShowGeoJSON').innerHTML = "Show";
+	        get('btnShowGeoJSON').onclick = function() { uploadGeoJSON(); }
+
+	        get('downloadRec').style.display = "block";
+    		get("btnDelRec").style.display = "block";
+
+    		get('btnNewRectangle').classList.add('btnNew');
+    		get('btnNewRectangle').classList.remove('btnNewShape');
+    		get('btnNewRectangle').innerHTML = "+ New";
+
+        	/* enable drawing of the rectangle */
+        	rectangle = map.editTools.startRectangle().on('editable:editing editable:drag',changeInput).setStyle({color: "black", weight: 2}).addTo(layer).enableEdit();
+        }
+
+        /* called when user changes input box in control panel */
+        function changeRecLoc() {
+
+    		/* get lat and lng from txt boxes */
+    		var latTopLeft = val("latTopLeft");
+    		var lngTopLeft = val("lngTopLeft");
+
+    		var latBottomRight = val("latBottomRight");
+    		var lngBottomRight = val("lngBottomRight");
+
+    		if(parseFloat(latTopLeft) < parseFloat(latBottomRight)){
+    			alert("Invalid latitude input.");
+    			return;
+    		}
+
+    		if(parseFloat(lngTopLeft) > parseFloat(lngBottomRight)) {
+    			alert("Invalid longitude input.");
+    			return;
+    		}
+
+
+    		updateMarker(latTopLeft,lngTopLeft, 'TL');
+    		updateMarker(latBottomRight,lngBottomRight, 'BR');
+
+    		/* define bounds of new rectangle */
+    		var bounds = [[latTopLeft, lngTopLeft], [latBottomRight, lngBottomRight]];
+
+    		clearMap();
+
+    		/* create new rectange with bounds from above */
+    		rectangle = map.editTools.createRectangle(bounds).on('editable:editing editable:drag',changeInput).setStyle({color: "black", weight: 2}).addTo(layer).enableEdit();
+
+        }
+
+        /* called when user deletes rectangle from contol panel */
+        function delRectangle(){
+
+        	clearMap();
+        	deleteRecMarkers();
+        	clearRecView();
+
+    		rectangle = 0;
+        }
+
+        var polygon;
+        var oldCoords = [];
+
+        /* update value of oldCoords */
+        function rememberCoords() {
+
+        	oldCoords = [];
+
+    		polygon.getLatLngs()[0].forEach(function showPoints(entry){
+    			oldCoords.push([entry.lat, entry.lng]);
+    		});
+        }
+
+        /*update coords of markers and popup content*/
+        function updateMarker(index, lat, lng) {
+        	polyMarkers[index - 1][0].setLatLng([lat, lng]);
+	    			polyMarkers[index - 1][1].setContent("Point " + index + "<br/>" + lat + " : " + lng);
+        }
+
+        /* shows/hides polygon markers */
+        function showMarker(id) {
+        	/* find index of point whose marker we want to show */
+        	var index = id.slice(6);
+
+        	if(get('latInput' + index).value == '' || get('lngInput' + index).value == '') return;
+
+        	index = parseInt(index);
+
+        	/* show marker if it is not on map */
+        	if(map.hasLayer(polyMarkers[index - 1][0])){
+        		get(id).innerHTML = " + Marker";
+        		map.removeLayer(polyMarkers[index - 1][0]);
+        	}
+        	/* remove marker if it was on the map */
+        	else{
+        		polyMarkers[index - 1][0].addTo(map);
+        		get(id).innerHTML = " - Marker";
+        	}
+        }
+
+        /* deletes input boxes for a poly point */
+        function deletePoint(id, version) {
+
+			if(version == 1) var ptHolder = get("pointHolder");
+			else var ptHolder = get("uploadedShapePtHolder");
+        	/* get num of points */
+        	var numOfPts = ptHolder.childElementCount / 8;
+
+        	/* find index of point being deleted */
+        	var index = id.slice(8);
+
+        	/* check if deleting an empty point slot */
+        	var empty = get('latInput' + index).value == '';		
+
+        	index = parseInt(index);
+
+        	/* delete labels, input and delete button for the deleted point */
+        	for(i = 0; i < 7; i++) ptHolder.removeChild(get(id).previousSibling);
+        	ptHolder.removeChild(get(id));
+
+        	map.removeLayer(polyMarkers[index - 1][0]); 
+
+        	/* remove marker from array and keep the order */
+        	for(j = index - 1; j < polyMarkers.length - 1; j++){
+    			polyMarkers[j] = polyMarkers[j + 1];
+    		}
+    		polyMarkers.pop();
+
+        	/* change indices of all points after */
+        	for(i = index; i < numOfPts; i++){
+        		var num = 1 + i;
+
+        		get("Point" + num).innerHTML = "Point " + i;
+        		get("Point" + num).id = "Point" + i;
+
+        		get("Marker" + num).id = "Marker" + i;
+        		
+        		get("latInput" + num).id = "latInput" + i;
+        		get("lngInput" + num).id = "lngInput" + i;
+
+        		get("delPtBtn" + num).id = "delPtBtn" + i;
+
+        		polyMarkers[i - 1][1].setContent("Point " + i + "<br/>" + polyMarkers[i - 1][0].getLatLng().lat + " : " + polyMarkers[i - 1][0].getLatLng().lng );
+        	}
+        	/* call to update shape on map */ 
+        	changePolyLocDel(version);
+
+        	if(ptHolder.childElementCount == 0) {
+        		if(version == 1) clearPolyView();
+        		else deleteUpload();
+        	}
+        }
+
+        /* updates location of polygon based on input box content */
+        function changePolyLoc(id, version) {
+
+        	var i = id.slice(8);
+        	if(get("latInput" + i).value == '' || get("lngInput" + i).value == '') return;
+
+        	if(version == 1){
+	        	/* number of points in the control panel */
+	        	var numOfPts = get("pointHolder").childElementCount / 8;
+	        }
+        	else var numOfPts = get("uploadedShapePtHolder").childElementCount / 8;
+        	/* array to store new coords */
+        	var newBounds = [];
+
+        	for(i = 1; i <= numOfPts; i++){
+
+    			if(get("latInput" + i).value != '' && get("lngInput" + i).value != ''){
+
+    				updateMarker(i, get("latInput" + i).value, get("lngInput" + i).value);
+	    			newBounds.push([parseFloat(get("latInput" + i).value), parseFloat(get("lngInput" + i).value)]);
+    			}
+        	}
+
+        	if(newBounds.length > 2) {
+
+	        	var xmin = newBounds[0][1];
+	        	var xmax = newBounds[0][1];
+
+	        	var ymin = newBounds[0][0];
+	        	var ymax = newBounds[0][0];
+
+	        	for(i = 1; i < newBounds.length; i++) {
+
+	        		if(newBounds[i][1] > xmax) {
+	        			xmax = newBounds[i][1];
+	        			ymax = newBounds[i][0];
+	        		}
+	        		else if(newBounds[i][1] == xmax && newBounds[i][0] > ymax) ymax = newBounds[i][0];
+
+	        		if(newBounds[i][1] < xmin) {
+	        			xmin = newBounds[i][1];
+	        			ymin = newBounds[i][0];
+	        		}
+	        		else if(newBounds[i][1] == xmin && newBounds[i][0] < ymin) ymin = newBounds[i][0];
+
+	        	}
+
+	        	var m = (ymin - ymax)/(xmin - xmax);
+	        	/*ymax = m * xmax + s */
+	        	var s = ymax - m * xmax;
+
+	        	var ptsBelow = [[xmin, ymin]];
+	        	var ptsAbove = [[xmax, ymax]];
+
+	        	for(i = 0; i < newBounds.length; i++) {
+	        		if(newBounds[i][1] == xmin && newBounds[i][0] == ymin) {}
+	        		else if (newBounds[i][1] == xmax && newBounds[i][0] == ymax) {}
+	        		else if(newBounds[i][0] > newBounds[i][1] * m + s) {
+	        			ptsAbove.push([newBounds[i][1], newBounds[i][0]]);
+	        		}
+	        		else {
+	        			ptsBelow.push([newBounds[i][1], newBounds[i][0]]);
+	        		}
+	        	}
+
+	        	for(i = 0; i < ptsBelow.length - 1; i++) {
+	        		for(j = i + 1; j < ptsBelow.length; j++) {
+	        			if((ptsBelow[i][0] > ptsBelow[j][0]) || (ptsBelow[i][0] == ptsBelow[j][0] && ptsBelow[i][1] > ptsBelow[j][1])) {
+	        				var help = ptsBelow[i];
+	        				ptsBelow[i] = ptsBelow[j];
+	        				ptsBelow[j] = help;
+	        			}
+	        		}
+	        	}
+
+	        	for(i = 0; i  < ptsAbove.length - 1; i++) {
+	        		for(j = i + 1; j  < ptsAbove.length; j++) {
+	        			if((ptsAbove[i][0] < ptsAbove[j][0]) || (ptsAbove[i][0] == ptsAbove[j][0] && ptsAbove[i][1] < ptsAbove[j][1])) {
+	        				var help = ptsAbove[i];
+	        				ptsAbove[i] = ptsAbove[j];
+	        				ptsAbove[j] = help;
+	        			}
+	        		}
+	        	}
+
+	        	newBounds = [];
+
+				for(i = 0; i  < ptsBelow.length; i++) {
+	        		newBounds.push([ptsBelow[i][1], ptsBelow[i][0]]);
+	        	}  
+
+	        	for(i = 0; i  < ptsAbove.length; i++) {
+	        		newBounds.push([ptsAbove[i][1], ptsAbove[i][0]]);
+	        	}
+        	}
+
+        	clearMap();
+        	deleteRecMarkers();
+        	
+        	/* create new poly based on new bounds */
+        	polygon = map.editTools.createPolygon(newBounds).on('editable:vertex:new',function() {vertexAdd(version)}).on('editable:vertex:deleted', function() {vertexDel(version)}).on('editable:drag',function() {dragPoly(version)}).on('editable:vertex:drag', function() {dragVertex(version)}).on('editable:vertex:dragend', function() {dragVertex(version)}).setStyle({color: "black", weight: 2}).addTo(layer).enableEdit();
+        	
+        	rememberCoords();
+        }
+
+        /* updates location of polygon based on input box content */
+        function changePolyLocDel(version) {
+
+        	if(version == 1) {
+	        	/* number of points in the control panel */
+	        	var numOfPts = get("pointHolder").childElementCount / 8;
+	        }
+	        else var numOfPts = get("uploadedShapePtHolder").childElementCount / 8;
+        	/* array to store new coords */
+        	var newBounds = [];
+        	for(i = 1; i <= numOfPts; i++){
+
+    			if(get("latInput" + i).value != '' && get("lngInput" + i).value != ''){
+
+    				updateMarker(i, get("latInput" + i).value, get("lngInput" + i).value);
+	    			newBounds.push([get("latInput" + i).value, get("lngInput" + i).value]);
+    			}
+        	}
+        	
+        	for(i = 0; i < oldCoords.length; i++) {
+        		var found = false;
+        		for(j = 0; j < newBounds.length; j++) {
+        			if(oldCoords[i][0] == newBounds[j][0] && oldCoords[i][1] == newBounds[j][1]) {
+        				found = true;
+        			}
+        		}
+        		if(!found) {
+        			for(j = i; j < oldCoords.length - 1; j++) {
+        				oldCoords[j] = oldCoords[j + 1];
+        			}
+        			oldCoords.pop();
+        			break;
+        		}
+        	}
+
+        	clearMap();
+        	deleteRecMarkers();
+        	
+        	/* create new poly based on new bounds */
+        	polygon = map.editTools.createPolygon(oldCoords).on('editable:vertex:new', function() {vertexAdd(version)}).on('editable:vertex:deleted', function() {vertexDel(version)}).on('editable:drag',function() {dragPoly(version)}).on('editable:vertex:drag', function() {dragVertex(version)}).on('editable:vertex:dragend', function() {dragVertex(version)}).setStyle({color: "black", weight: 2}).addTo(layer).enableEdit();
+
+        	rememberCoords();
+        }
+
+        function dragPoly(version) {
+        	try {
+        		if(version == 1) {
+		        	/* find number of points */
+		        	var numOfPts = get("pointHolder").childElementCount / 8;
+		        }
+		        else var numOfPts = get("uploadedShapePtHolder").childElementCount / 8;
+	    		/*holds new poly coors */
+	    		var newCoords = [];
+
+	    		/* for each point show coords */
+	    		polygon.getLatLngs()[0].forEach(function showPoints(entry){
+	    			newCoords.push([entry.lat, entry.lng]);
+	    		});
+
+	    		for(i = 0; i < oldCoords.length; i++) {
+
+	    			for(j = 1; j <= numOfPts; j++) {
+
+	        			if(val('latInput' + j) == oldCoords[i][0] && val('lngInput' + j) == oldCoords[i][1]) {
+
+	        				get('latInput' + j).value = newCoords[i][0];
+	        				get('lngInput' + j).value = newCoords[i][1];
+
+	        				updateMarker(j, newCoords[i][0], newCoords[i][1]);
+	        			}
+	    			}
+	    		}
+
+	    		rememberCoords();
+        	}
+        	catch {console.log("an exception has been cought");}
+        }
+
+        function dragVertex(version) {	
+        	try {
+        		if(version == 1) {
+		        	var numOfPts = get("pointHolder").childElementCount / 8;
+		        }
+		        else var numOfPts = get("uploadedShapePtHolder").childElementCount / 8;
+	    		/* index of point that is not in new points */
+	    		var rememberIndex = 0;
+
+	    		for(i = 1; i <= numOfPts; i++) {
+	    			
+					var found = false;
+
+					if(val('latInput' + i) != '' && val('lngInput' + i) != ''){
+
+						polygon.getLatLngs()[0].forEach(function findPoint(entry){
+							if(val('latInput' + i) == entry.lat && val('lngInput' + i) == entry.lng){
+		    					found = true;
+	    					}
+						});
+						if(!found) {
+							rememberIndex = i;
+						}
+					}
+    			}
+    			/*find value that is not in old points */
+    			polygon.getLatLngs()[0].forEach(function findPoint(entry){
+
+    				var found = false;
+
+    				for(i = 1; i <= numOfPts; i++) {
+
+	    				if(val('latInput' + i) == entry.lat && val('lngInput' + i) == entry.lng){
+	    					found = true;
+	    				}
+    				}
+	    			if(!found) {
+	    				
+	    				updateMarker(rememberIndex, entry.lat, entry.lng);
+
+						/*update lat and lng input content */
+						get("latInput" + rememberIndex).value = entry.lat;
+						get("lngInput" + rememberIndex).value = entry.lng;
+	    			}
+    			});
+
+    			rememberCoords();
+        	}
+        	catch { console.log("an exception has been cought"); }
+        }
+
+        /* adds input boxes for a new polygon point */
+        function addPoint(version) {
+
+        	/* get num of pts for id */
+
+        	if(version == 1) var coordsContainer = get("pointHolder");
+        	else var coordsContainer = get("uploadedShapePtHolder");
+
+        	var numOfPts = coordsContainer.childElementCount / 8 + 1;
+
+        	if(numOfPts - 1 == 0 && rectangle != 0) {
+        		deleteRecMarkers();
+        	}
+
+        	/* create a new marker for that point*/
+    		var marker = L.marker([0,0],{icon: myIcon});
+
+    		var popup = L.popup(customOptions);
+			marker.bindPopup(popup);
+
+			/* add marker to array of markers */
+    		polyMarkers.push([marker,popup]);
+
+    		var line = document.createElement("hr");
+    		line.classList.add('line');
+    		coordsContainer.appendChild(line);
+
+        	/* create label with point name */
+			var ptName = document.createElement("button");
+			ptName.classList.add('btnPoint'); 
+			ptName.innerHTML = "Point " + numOfPts;
+			ptName.id = "Point" + numOfPts;
+			coordsContainer.appendChild(ptName);
+
+			/* create a marker button */
+			var btnMarker = document.createElement("button");
+			btnMarker.classList.add('btnMarker'); 
+			btnMarker.innerHTML = " + Marker";
+			btnMarker.id = "Marker" + numOfPts;
+			btnMarker.onclick = function() { showMarker(this.id) };
+			coordsContainer.appendChild(btnMarker);
+
+        	/* create "Lat:" label */
+			var latLabel = document.createElement("button");
+			latLabel.classList.add('btnPolyLat'); 
+			latLabel.innerHTML = "Lat:";
+			coordsContainer.appendChild(latLabel);
+
+			/* create lat input */
+			var latInput = document.createElement("input");
+			latInput.type = "text";
+			latInput.classList.add("inputPolyCoord");
+			latInput.id = "latInput" + numOfPts;
+			latInput.onchange = function() { changePolyLoc(this.id, version); }
+			coordsContainer.appendChild(latInput);
+
+			/* create "Lon:" label */
+			var lngLabel = document.createElement("button");
+			lngLabel.classList.add('btnPolyLon'); 
+			lngLabel.innerHTML = "Lon:";
+			coordsContainer.appendChild(lngLabel);
+
+			/* create lon input */
+			var lngInput = document.createElement("input");
+			lngInput.type = "text";
+			lngInput.classList.add("inputPolyCoord");
+			lngInput.id = "lngInput" + numOfPts;
+			lngInput.onchange = function() { changePolyLoc(this.id, version); }
+			coordsContainer.appendChild(lngInput);
+
+			/* create delete point button */
+			var delPtBtn = document.createElement("button");
+			delPtBtn.classList.add('btnDelPt');
+			delPtBtn.innerHTML = "&#10005";
+			delPtBtn.id = "delPtBtn" + numOfPts;
+			delPtBtn.onclick = function() { deletePoint(this.id, version) };
+			coordsContainer.appendChild(delPtBtn);
+
+        }
+
+        function vertexAdd(version) {
+        	try {
+        		if (version == 1) {
+		        	/* find number of points */
+		        	var numOfPts = get("pointHolder").childElementCount / 8 + 1;
+		        }
+		        else var numOfPts = get("uploadedShapePtHolder").childElementCount / 8 + 1;
+
+	    		var newPtLat;
+	    		var newPtLng;
+
+	    		/* for each point show coords */
+	    		polygon.getLatLngs()[0].forEach(function showPoints(entry){
+	    			
+	    			/* check if point is new */
+					var found = false;
+
+	    			if(oldCoords.length){
+
+		    			for(i = 0; i < oldCoords.length; i++){
+
+		    				if(oldCoords[i][0] == entry.lat && oldCoords[i][1] == entry.lng) {
+		    					found = true;
+		    				}
+		    			}
+		    		}
+		    		if(!found) {
+	    				newPtLat = entry.lat;
+	    				newPtLng = entry.lng;
+		    		}
+		    		
+	    		});
+
+	    		addPoint(version);
+	    		updateMarker(numOfPts, newPtLat, newPtLng);
+
+	    		get('latInput' + numOfPts).value = newPtLat;
+	    		get('lngInput' + numOfPts).value = newPtLng;
+
+				rememberCoords();
+    		}
+    		catch { console.log("an exception has been cought"); }
+        }
+
+        function vertexDel(version) {
+        	try{
+        		
+        		if(version == 1) {
+	        		var numOfPts = get("pointHolder").childElementCount / 8;
+				}
+				else var numOfPts = get("uploadedShapePtHolder").childElementCount / 8;
+
+	    		for(i = 1; i <= numOfPts; i++) {
+
+	    			var found = false;
+
+	    			if(get('latInput' + i).value != '' && get('lngInput' + i).value != ''){
+		    			polygon.getLatLngs()[0].forEach(function findPoint(entry){
+		    				
+		    				if(get('latInput' + i).value == entry.lat && get('lngInput' + i).value == entry.lng){
+		    					found = true;
+		    				}
+		    			});
+
+		    			if(!found){
+		    				var newid = "delPtBtn" + i;
+		    				deletePoint(newid, version);
+		    				break;
+		    			}
+	    			}
+	    		}
+    		}
+    		catch{console.log("an exception has been cought");}
+        }
+
+        function drawPolygon(e) {
+
+        	clearMap();
+
+        	deleteRecMarkers();
+        	deletePolyMarkers();
+
+        	clearRecView();
+        	clearPolyView();
+
+	        deleteUpload();
+
+        	/* show "- Delete" button */
+        	get("btnDelPoly").style.display = "block";
+        	get("downloadPoly").style.display = "block";
+
+        	get('btnNewPolygon').classList.remove('btnNewShape');
+    		get('btnNewPolygon').classList.add('btnNew');
+    		get('btnNewPolygon').innerHTML = "+ New";
+
+        	/* start drawing new polygon */
+        	polygon = map.editTools.startPolygon().on('editable:vertex:new', function() {vertexAdd(1)}).on('editable:vertex:deleted', function() {vertexDel(1)}).on('editable:drag', function() {dragPoly(1)}).on('editable:vertex:drag', function() {dragVertex(1)}).on('editable:vertex:dragend', function() {dragVertex(1)}).setStyle({color: "black", weight: 2}).addTo(layer).enableEdit();
+        }
+
+        function delPolygon() {
+
+        	clearMap(); 
+        	deletePolyMarkers(); 
+        	deleteRecMarkers();
+        	clearPolyView();
+        	clearRecView();
+
+			polygon = 0;
+        }
+
+        function showHelp() {
+        	window.alert("Finish drawing shape: double click on point \n\nMove shape: click on shape + drag \n\nResize shape: click on point + drag \n\nDelete shape: ctlr/command + click on shape\n\nAdd point: click on middle point \n\nDelete point: click on it");
+        }
+
+        var count = 0;
+
+        function showData(project) {
+        	
+        	var container = get('optionsHolder');
+        	if (count == 0) {	
+        		var formatOptions = get(last_project + "FormatsHolder").innerHTML;
+        		var position = formatOptions.indexOf("<br><br>");
+        		var lst = [];
+        		var counter = 0;
+        		while (position != -1){
+        			lst[counter] = formatOptions.slice(0, position);
+        			counter = counter + 1;
+        			formatOptions = formatOptions.slice(position + 8);
+        			position = formatOptions.indexOf("<br><br>");
+        		}
+        		lst[counter] = formatOptions;
+        		counter = counter + 1;
+
+        		for (i = 0; i < counter; i++){
+        			if (lst[i] == "pc"){
+        				var btn = document.createElement("button");
+        				btn.classList.add('btnOption');
+						btn.innerHTML = "Point Cloud (LAS format)";
+						btn.onclick = function() {downloadData(last_project, "pc", "las")}
+						container.appendChild(btn);
+					}
+					else {
+						var btn = document.createElement("button");
+        				btn.classList.add('btnOption');
+						btn.innerHTML = "FWF Data (CSV format)";
+						btn.onclick = function() {downloadData(last_project, "als", "pwastxt")}
+						container.appendChild(btn);
+						var btn2 = document.createElement("button");
+        				btn2.classList.add('btnOption');
+						btn2.innerHTML = "FWF Data (DXF format)";
+						btn2.onclick = function() {downloadData(last_project, "als", "pwasdxf")}
+						container.appendChild(btn2);
+					}
+        		}
+				container.style.display = "block";
+				get("btnLiDARdata").classList.add("active");
+				count = 1;
+			}
+			else {
+				while (container.firstChild != null) {
+					container.removeChild(container.firstChild);
+				}
+				container.style.display = "none";
+				get("btnLiDARdata").classList.remove("active");
+				count = 0;
+			}
+        }
+
+        function downloadGeoJSON() {
+        	var geoJSON = layer.toGeoJSON();
+        	if(geoJSON.features.length == 0) {
+        		window.alert("There is no shape on the map");
+        		return;
+        	}
+        	var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(geoJSON));
+			var aDownload = document.getElementById('aDownload');
+			aDownload.setAttribute("href", dataStr);
+			aDownload.setAttribute("download", "shape.geojson");
+			aDownload.click();
+        }
+
+        function downloadData(project, data, format) {
+        	var geojson = layer.toGeoJSON();
+        	const requestData = new XMLHttpRequest();
+        	var requestDataUrl; // no url available
+        	
+        	requestData.open("POST", requestDataUrl, true);
+        	requestData.setRequestHeader('Content-Type', 'application/json');
+        	requestData.send(JSON.stringify(geojson));
+        	requestData.responseType = 'arraybuffer';
+
+        	requestData.onreadystatechange = function() {
+        		if(this.readyState == 4 && this.status == 200){
+    				var filename = "";
+    				var disposition = requestData.getResponseHeader('Content-Disposition');
+    				if (disposition && disposition.indexOf('attachment') !== -1) {
+    					var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+    					var matches = filenameRegex.exec(disposition);
+    					if (matches != null && matches[1]) 
+    						filename = matches[1].replace(/['"]/g, '');	
+    				}
+    				var type = requestData.getResponseHeader('Content-Type');
+    				var blob = typeof File === 'function'
+			            ? new File([this.response], filename, { type: type })
+			            : new Blob([this.response], { type: type });
+			        if (typeof window.navigator.msSaveBlob !== 'undefined') {
+			            window.navigator.msSaveBlob(blob, filename);    
+			        }
+			        else {
+			            var URL = window.URL || window.webkitURL;
+			            var downloadUrl = URL.createObjectURL(blob);
+			            if (filename) {
+			                var a = document.createElement("a");
+			                if (typeof a.download === 'undefined') {
+			                    window.location = downloadUrl;
+			                } else {
+			                    a.href = downloadUrl;
+			                    a.download = filename;
+			                    document.body.appendChild(a);
+			                    a.click();  
+			                }
+			            } else {
+			            	if (format == "las")
+			            		saveAs(downloadUrl, project + "-area.las");
+			            	else 
+			            		saveAs(downloadUrl, project + "-area.zip");
+			            }
+			            setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100);
+			        }
+        		}
+        	}
+        }
+
+        function viewPointData() {
+        	get("the-form").style.display = (get("the-form").style.display == "block") ? "none" : "block";
+        	get("btnModelMap").style.display = (get("btnModelMap").style.display == "block") ? "none" : "block";
+        	if (get("btnViewLiDARData").classList.contains("active"))
+        		get("btnViewLiDARData").classList.remove("active");
+        	else get("btnViewLiDARData").classList.add("active");
+        }
+	</script>
+	<script>
+		var resulturl;
+		var sketchfabApiUrl = 'https://api.sketchfab.com/v2/models';
+	    var sketchfabModelUrl = 'https://sketchfab.com/models/';
+	    var data = $('#the-form')[0];
+	    
+	    function uploadModel(modelData) {
+
+	      console.log('Begin upload of ' + String(data.modelFile.value));
+	      var formData = new FormData(data);
+	      $.each( data, function(property, value) {
+	        formData.append(property, value.value);
+	      } );
+	      
+	      $.ajax( {
+	        url: sketchfabApiUrl,
+	        data: formData,
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+	        type: 'POST',
+	        success: function(response) {
+	          var uid = response.uid;
+	          console.log('Begin polling processing status. If successful, the model will be available at ' + sketchfabModelUrl + uid);
+	          $('#status').html('Upload successful. Begin polling...');
+	          pollProcessingStatus(uid);
+	        },
+	        error: function(response) {
+	          console.log('Upload Error!');
+	          console.log(JSON.stringify(response));
+	          $('#status').html('Upload error!');
+	        }
+	      });
+	    }
+
+	    function pollProcessingStatus(urlid) {
+
+	      var url = sketchfabApiUrl + '/' + urlid + '/status?token=' + data.token.value;
+	      var errors = 0;
+	      var maxErrors = 10;
+	      var retry = 0;
+	      var maxRetries = 50;
+	      var retryTimeout = 5000; 
+	      var retryTimeoutSec = retryTimeout / 1000; 
+	      var complete = false;
+	      function getStatus() {
+	        $.ajax( {
+	          url: url,
+	          type: 'GET',
+	          dataType: 'json',
+	          success: function(response) {
+	            retry++;
+	            console.log('Got status...')
+	            var status = response.processing;
+	            
+	            switch(status) {
+	              case 'PENDING':
+	                console.log('Model is in the processing queue. Waiting ' + (retryTimeoutSec) + ' seconds to try again...');
+	                $('#status').html('Model in queue...');
+	                break;
+	              case 'PROCESSING':
+	                console.log('Model is being processed. Waiting ' + (retryTimeoutSec) + ' seconds to try again...');
+	                $('#status').html('Model processing...');
+	                break;
+	              case 'FAILED':
+	                console.log('Model processing failed:');
+	                console.log(response.error);
+	                $('#status').html('Model processing failed!');
+	                complete = true;
+	                break;
+	              case 'SUCCEEDED':
+	                console.log('It worked!');
+	                console.log(sketchfabModelUrl + urlid);
+	                complete = true;
+	                resulturl = sketchfabModelUrl + urlid;
+	                $('#status').html('Success');
+	                break;
+	              default:
+	                console.log('This message should never appear...something changed in the processing response. See: ' + url);
+	            }
+	            if (retry < maxRetries && !complete) {
+	              setTimeout(getStatus, retryTimeout);
+	            } else if (complete) {
+	              return;
+	            } else if (retry >= maxRetries) {
+	              console.log('Polled ' + maxRetries + ' times and it\'s still not finished...quitting');
+	            } else {
+	              console.log('Something weird happened...quitting');
+	            }
+	          },
+	          error: function(response) {
+	            errors++;
+	            retry++;
+	            if (errors < maxErrors && retry < maxRetries && !complete) {
+	              console.log('Error: ' + JSON.stringify(response));
+	              console.log('Error getting status (' + errors + '). Trying again...');
+	              setTimeout(getStatus, retryTimeout);
+	            } else {
+	              console.log('Too many errors...quitting');
+	            }
+	          }
+	        });
+	      }
+	      getStatus();
+	    }
+
+	    data.onsubmit = function() {
+	      uploadModel(data);
+	      return false; 
+	    }
+
+	</script>
+</body>
+</html>

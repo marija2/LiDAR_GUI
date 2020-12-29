@@ -1,0 +1,890 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+#sideNav, .btnOpenClose, .btnTitle, .btnOption, .navBarElem,
+.btnScan, .btnForm {
+	background-color: white;
+}
+
+#navBar {
+	width: 100%;
+	height: 70px;
+	z-index: 2;
+	position: relative;
+	background-color: white;
+}
+
+#separator {
+	font-size: 14px;
+	width: calc(100% - 50px);
+	background-color: #551586;
+	color: white;
+	position: relative;
+	height: 23px;
+	z-index: 2;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 7px 0px 0px 50px;
+}
+
+.navBarElem, #logo, .btnOpenClose, .btnShape, #pStatus, #status, #holder {
+	float: left;
+}
+
+.navBarElem {
+	font-size: 14px;
+	height: 100%;
+	transition: 0.5s;
+	width: 100px;
+}
+
+#logo {
+	width: 240px;
+	height: 39px;
+	margin: 15px 30px 0px 40px;
+}
+
+.btnOpenClose, .btnOption, .btnTitle, .btnScan, .formatsHolder,
+.formats, .labelNoData, .navBarElem, #the-form, .btnForm {
+	color: #808080;
+}
+
+#btnOpen, #sideNav {
+	height: calc(100% - 100px);
+}
+
+.btnOpenClose {
+	border: none;
+    width: 25px;
+}
+
+#sideNav {
+	width: 0;
+    z-index: 1;
+    position: absolute;
+    overflow-x: hidden;
+}
+
+#btnOpen {
+	font-size:16px;
+	padding: 5px;
+	z-index: 1;
+	position: absolute;
+	position: fixed;
+}
+
+#btnClose {
+    font-size: 23px;
+    height: calc(100% - 100px);
+    float: left;
+    margin-left: 350px;
+    position: absolute;
+    position: fixed;
+    padding-bottom: 100px;
+    display:none;
+    transition: 0.5s;
+}
+
+.btnOption, .btnTitle, .navBarElem, .btnScan {
+	font-family: Arial, Helvetica, sans-serif;
+	border: none;
+}
+
+.btnOption, .btnScan {
+	text-align: left;
+	transition: 0.5s;
+	width: 100%;
+}
+
+.btnTitle {
+	text-align: left;
+	width: 100%;
+	font-size: 14px;
+	padding: 15px 15px 15px 10px;
+	margin-top: 5px;
+	margin-bottom: 0px;
+	margin-left: 10px;
+	border-top: 1px solid #F0F0F0;
+	border-bottom: 1px solid #F0F0F0;
+}
+
+.btnOption {
+	padding: 15px 15px 15px 30px;
+	font-size: 12px;
+}
+
+.btnScan {
+	height: 100%;
+	padding: 15px 0px 15px 30px;
+	width: 100px;
+}
+
+#btnModelMap {
+	margin: 5px 0px 15px 30px;
+	padding: 3px;
+	border: solid;
+	border-width: .5px;
+	border-color: #999999;
+	width: 100px;
+	display: none;
+	text-align: center;
+}
+
+.btnTitle:hover, .btnOpenClose:hover, .navBarElem:hover,
+.btnOption:hover, .active, .btnScan:hover, .btnForm:hover {
+  color: #111;
+}
+
+.btnTitle:hover {
+	background-color: #f7f7f7;
+}
+
+#holder {
+	width: 323px;
+	/*height: 100%;*/
+	float: left;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+@media screen and (max-height: 450px) {
+  .sideNav {padding-top: 15px;}
+}
+
+#map, #model {
+	width: 100%;
+	height: calc(100% - 100px);
+	bottom: 0;
+	position: absolute;
+	z-index: 0;
+}
+
+#explanationHolder {
+	width: 100%;
+	height: calc(100% - 100px);
+	bottom: 0;
+	position: absolute;
+	z-index: 1;
+	overflow-y: scroll;
+}
+
+#selectAreaOptions{
+	margin: 0px 0px 0px 0px;
+	width: 100%;
+}
+
+#model, #optionsHolder, #divModelMap, #availableDataHolder, 
+#selectAreaOptions, #the-form, #polyCoordinates { 
+  display: none;
+}
+
+#the-form {
+	padding: 5px 0px 0px 30px;
+	width: 290px;
+}
+
+.btnForm {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	border: solid;
+	border-color: #999999;
+	border-width: .5px;
+	padding: 3px;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 12px;
+    color: #111;
+    background-color: white;
+    border: solid;
+    border-color: #999999;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 3px;
+	border-width: .5px;
+    display: inline-block;
+}
+
+#pStatus, #status {
+	margin-right: 5px;
+}
+
+#status {
+	width: 230px;
+}
+
+.btnScan, .formatsHolder, .formats, .labelNoData, #the-form {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	float: left;
+}
+
+.formats {
+	text-align: left;
+	width: 50px;
+	height: 100%;
+	padding: 15px 0px 15px 120px;
+}
+
+.formatsHolder {
+	width: 50px;
+	height: 13px;
+	margin-top: 7px;
+	text-align: center;
+	padding: 9px 0px 8px 0px;
+	overflow-y: scroll;
+}
+
+.btnRecShape {
+	width: 40%;
+	float: left;
+	padding: 10px 10px 10px 15px;
+	margin: 5px 0px 1px 10px;
+	border: solid 1px #C0c0c0;
+	border-top-right-radius: 12px;
+	border-top-left-radius: 12px;
+	border-bottom: none;
+
+}
+
+.btnRecShape:hover, .btnPolyShape:hover {
+	background-color: #FaFaFa;
+}
+
+.btnPolyShape {
+	width: 40%;
+	float: left;
+	padding: 10px 10px 10px 15px;
+	margin: 5px 0px 1px 0px;
+	border: solid 1px #C0c0c0;
+	border-top-right-radius: 12px;
+	border-top-left-radius: 12px;
+	border-bottom: none;
+}
+
+.btnNewShape {
+	width: 90%;
+	float: left;
+	margin: 15px 55px 15px 16px;
+	padding: 5px 5px 5px 5px;
+	text-align: center;
+	transition: 0s;
+	border: solid 1px #D0D0D0;
+	border-radius: 10px; 
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btnAddPoint {
+	width: 40%;
+	float: left;
+	margin: 15px 55px 15px 30px;
+	padding: 5px 5px 5px 5px;
+	text-align: center;
+	border: solid 1px #D0D0D0;
+	border-radius: 10px; 
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btnNewShape:hover, .btnDelShape:hover, .btnAddPoint:hover {
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0.5px 0.5px 3px #ddd;
+}
+
+.btnDelShape{
+	width: 30%;
+	float: left;
+	text-align: center;
+	margin: 15px 0px 15px 0px;
+	display: none;
+	padding: 5px 5px 5px 5px;
+	border: solid 1px #d0d0d0;
+	border-left: none;  
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btnExit{
+	float: left;
+	width: 15%;
+	display: none;
+}
+
+.labelNoData {
+	width: 100%;
+	padding: 15px 0px 15px 30px;
+	text-align: left;
+}
+
+.btnRecLatLon {
+	width: 18%;
+	float: left;
+	background-color: white;
+	color: #505050;
+	font-family: Arial, Helvetica, sans-serif;
+	border: none;
+	text-align: left;
+	transition: 0.5s;
+	padding: 15px 0px 15px 30px;
+	font-size: 12px;
+}
+
+.inputRecCoord {
+	width: 25%;
+	float: left;
+	background-color: white;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: left;
+	transition: 0.5s;
+	margin: 15px 10px 15px 0px;
+	font-size: 12px;
+}
+
+.btnPolyLat {
+	width: 18%;
+	float: left;
+	background-color: white;
+	color: #505050;
+	font-family: Arial, Helvetica, sans-serif;
+	border: none;
+	text-align: left;
+	transition: 0.5s;
+	padding: 15px 0px 15px 30px;
+	font-size: 12px;
+}
+
+.btnPolyLon {
+	width: 18%;
+	float: left;
+	background-color: white;
+	color: #505050;
+	font-family: Arial, Helvetica, sans-serif;
+	border: none;
+	text-align: left;
+	transition: 0.5s;
+	padding: 15px 0px 15px 25px;
+	font-size: 12px;
+}
+
+.inputPolyCoord {
+	width: 23%;
+	float: left;
+	background-color: white;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: left;
+	transition: 0.5s;
+	margin: 15px 0px 15px 0px;
+	font-size: 12px;
+}
+
+.inputRecCoord:hover, .inputPolyCoord:hover {
+	color: #111;
+}
+
+.btnDelPt {
+	width: 8%;
+	float: left;
+	background-color: white;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	border: none;
+	text-align: left;
+	transition: 0.5s;
+	padding: 15px 0px 15px 15px;
+	font-size: 12px;
+}
+
+.btnDelPt:hover {
+	color: #111;
+}
+
+.btnPoint {
+	width: 70%;
+	float: left;
+	background-color: white;
+	color: #505050;
+	font-family: Arial, Helvetica, sans-serif;
+	border: none;
+	text-align: left;
+	transition: 0.5s;
+	padding: 15px 15px 0px 30px;
+	font-size: 12px;
+}
+
+.btnMarker {
+	width: 25%;
+	float: left;
+	background-color: white;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	border: none;
+	text-align: left;
+	transition: 0.5s;
+	margin: 15px 10px 0px 0px;
+	padding: 5px 5px 5px 5px;
+	text-align: center;
+	border-radius: 10px;
+	border:solid 1px #d0d0d0;
+	font-size: 12px;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btnMarker:hover {
+	color: #111;
+	transition: 0.5s;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0.5px 0.5px 3px #ddd;
+}
+
+.open {
+	color: #303030;
+	background-color: #fafafa;
+}
+
+.closed {
+	color: #808080;
+}
+
+.section {
+	width: 96%;
+	overflow: auto;
+	float: left;
+	border-bottom: 1px solid #D0D0D0;
+	border-left: 1px solid #D0D0D0;
+	border: 1px solid #D0D0D0;
+	transition: 0.5s;
+	margin: 0px 0px 0px 10px;
+	background-color: #FFFFFF;
+}
+
+.smaller:hover {
+	background-color: white;
+}
+
+.btnHelp{
+	width: 30px;
+	height: 30px;
+	float: left;
+	text-align: center;
+	display: none;
+	margin: 7px 0px 0px 15px;
+	padding: 5px 5px 5px 5px;
+	border: solid 1px #d0d0d0; 
+	border-radius: 15px; 
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btnHelp:hover {
+	box-shadow: inset 1px 1px 1px #ddd;
+	background-color: white;
+}
+
+.popupCustom .leaflet-popup-content-wrapper {
+	text-align: center;
+}
+
+#tutorialAlert {
+	z-index: 999;
+	width: 320px;
+	height: 100px;
+	top: 40%;
+	left: 35%;
+	background-color: white; 
+	position: absolute;
+	padding: 30px 30px 30px 30px;
+	border-radius: 20px;
+	border: solid 1px #d0d0d0;
+	text-align: left;
+	box-shadow: 5px 5px 5px #888888;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#closeAlert {
+	border: none;
+	width: 100%;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: white;
+	text-align: right;
+	font-size: 14px;
+}
+
+#noTutorial, #yesTutorial {
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: white;
+	text-align: right;
+	font-size: 14px;
+	margin-bottom: 0px;
+	margin-left: 10px;
+	float: right;
+	margin-top: 40px;
+	width: 20%;
+	text-align: center;
+	padding: 10px 20px 10px 20px; 
+	border-radius: 10px;
+	border: solid 1px #d0d0d0;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+#noTutorial {
+	float: left;
+	margin-left: 0px;
+}
+
+#noTutorial:hover, #yesTutorial:hover {
+	color: #111;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	transition: 0.5s;
+	box-shadow: inset 0.5px 0.5px 3px #ddd;
+}
+
+#closeAlert:hover {
+	color: #111;
+}
+
+.tutorialActive {
+	background-color: #E8DEF3; 
+	border-top: solid 1px #C8A4EC;
+	border-bottom: solid 1px #C8A4EC;
+}
+
+.tutorialActive:hover {
+	background-color: #E8DEF3;
+}
+
+#stepExplanation {
+	z-index: 1;
+	width: 350px;
+	height: 350px;
+	top: 105px;
+	left: 370px;
+	
+	background-color: white; 
+	position: absolute;
+	position: fixed;
+	padding: 20px 30px 30px 30px;
+	border-radius: 20px;
+	border: solid 1px #d0d0d0;
+	box-shadow: 5px 5px 5px #909090;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	display: none;
+}
+
+#stepExplanation:before {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	top: 20px;
+	left: -11px; 
+	border: 0.75rem solid transparent;
+	border-left: none;
+	border-right-color: white;
+}
+
+.btnStepTutorial {
+	border: none;
+	width: 100%;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: white;
+	text-align: right;
+	font-size: 14px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 10px;
+}
+
+.btnStepTutorial:hover {
+	color: #111;
+}
+
+.btnNextStep {
+	border-radius: 10px;
+	border: solid 1px #d0d0d0;
+	width: 27%;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: white;
+	text-align: center;
+	font-size: 14px;
+	float: right;
+	padding: 10px 10px 10px 10px;
+	margin-top: 20px;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btnNextStep:hover, .btnPrevious:hover {
+	color: #111;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	transition: 0.5s;
+	box-shadow: inset 0.5px 0.5px 3px #ddd;
+}
+
+.btnPrevious {
+	border-radius: 10px;
+	border: solid 1px #d0d0d0;
+	width: 25%;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: white;
+	text-align: center;
+	font-size: 14px;
+	float: left;
+	padding: 10px 10px 10px 10px;
+	margin-top: 20px;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.line {
+	border-top: solid 1px #d0d0d0;
+	width: 90%;
+	margin-bottom: 0px;
+}
+
+.line2 {
+	border-top: solid 1px #B0B0B0;
+	width: 100%;
+	margin: 0px 10px 0px 15px;
+	margin-bottom: 0px;
+}
+
+.btnNew {
+	width: 30%;
+	float: left;
+	margin: 15px 0px 15px 16px;
+	padding: 5px 5px 5px 5px;
+	text-align: center;
+	transition: 0s;
+	border: solid 1px #D0D0D0;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btnNew:hover {
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0.5px 0.5px 3px #ddd;
+}
+
+.list {
+	padding-left: 20px;
+	margin-top: 5px;
+	margin-bottom: 0px; 
+	list-style-type: circle;
+}
+
+li {
+	padding: 3px 3px 3px 3px;
+	font-size: 16px;
+}
+
+.btnDraw {
+	width: 48%;
+	margin: 5px 0px 5px 10px;
+	padding: 13px 13px 13px 13px;
+	float: left;
+	text-align: center;
+	border: solid 1px #808080;
+	border-right: solid 0.5px #808080;
+	border-top-left-radius: 20px; 
+	border-bottom-left-radius: 20px; 
+}
+
+.btnDraw:hover, .btnUpload:hover {
+	background-color: #f7f7f7;
+}
+
+.btnUpload {
+	width: 48%;
+	padding: 13px 13px 13px 13px;
+	margin: 5px 0px 5px 0px;
+	float: left;
+	border: solid 1px #808080;
+	border-left: solid 0.5px #808080;
+	text-align: center;
+	border-top-right-radius: 20px; 
+	border-bottom-right-radius: 20px; 
+}
+
+#drawShapeSection, #uploadShapeSection {
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	overflow: auto;
+}
+
+#uploadShapeSection {
+	display: none;
+}
+
+.open2 {
+	background-color: #F0F0F0;
+	color: #111;
+	border: solid 1px #707070;
+
+}
+
+.btnShowShape {
+	float: left;
+	margin: 10px 0px 10px 0px;
+	display: none;
+	width: 27%;
+	border-radius: 0px;
+	border-left: none;
+}
+
+input[type="file"] {
+	display: none;
+}
+
+.btnInputFile {
+	margin: 10px 0px 10px 30px;
+	width: 81%;
+	float: left;
+}
+
+.btnInputFileActive {
+	width: 27%;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.labelUpload{
+	width: 90%;
+	background-color: #FFFFFF:
+	color: #505050; 
+	padding: 10px 0px 10px 40px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	margin: 10px 0px 0px 0px;
+	border: none;
+	display: none;
+}
+
+#errorLabel {
+	margin: 0px 0px 0px 0px;
+}
+
+#uploadedShapePtHolder, #uploadShapeSection {
+	overflow-x: hidden; 
+}
+
+#downloadGeoJSONSection {
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+}
+
+.btnDownloadShape {
+	float: left;
+	width: 30%;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.btnDownloadUpload {
+	float: left;
+	width: 27%;
+	margin: 10px 0px 10px 0px;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+#downloadRec, #downloadPoly, #downloadUpload, #uploadedShapeAddPt, 
+#aDownload, #retrievalOptionsHolder, #contourOptionsHolder, 
+#rasterOptionsHolder {
+	display: none;
+}
+
+#retrievalOptionsHolder {
+	width: 100%;
+	font-size: 13px;
+	color: #808080;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 15px 15px 15px 15px;
+}
+
+.line3 {
+	border-top: solid 1px #B0B0B0;
+	width: 100%;
+	margin: 10px 0px 10px 0px;
+}
+
+.selectOptions, .numberInput {
+	margin: 5px 5px 5px 5px;
+}
+ .checkboxOptions {
+	margin: 5px 4px 5px 0px;
+ }
+.formOptions {
+	margin: 5px 5px 0px 5px;
+}
+.numberInput {
+	width: 20%;
+}
+
+.btnDownload {
+	float: right;
+	margin: 5px 30px 10px 5px;
+	padding: 10px 10px 10px 10px;
+	width: 30%;
+}
+
+.outputProductOptions {
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+}
+
+.gridInput {
+	width: 13%;
+	margin: 10px 5px 0px 5px;
+}
+
+.gridCheckbox {
+	margin: 10px 5px 10px 10px;
+}
+
+.retrievalOptions {
+	width: 278px;
+	padding: 10px 10px 10px 10px;
+	border: 1px solid #d0d0d0;
+	border-top: none; 
+	margin-bottom: 10px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.btnRetrievalOpt {
+	padding: 10px 10px 10px 10px;
+	background-color: white;
+	border: solid 1px #D0D0D0;
+	width: 300px;
+	margin: 0px 0px 0px 0px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	color: #505050;
+	font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.btnRetrievalOpt:hover {
+	background-color: #f0f0f0;
+}
+
+.btnRetrievalOptActive {
+	border-radius: 10px;
+	margin: 0px 0px 10px 0px;
+}

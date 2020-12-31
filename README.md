@@ -10,4 +10,4 @@ The interface includes a tutorial which highlights the steps that can be taken i
 If you are interested in the motivation behind this project, why LiDAR data is important and has many applications, or
 simply want to read more about the interface, please refer to the Google Drive link below, where the project is laid out in detail.
 
-Google Drive link: https://drive.google.com/file/d/1FxrIl2ldml5iiGuARKhFaC5kbBHCiQUw/view?usp=sharing
+Google Drive link: https://docs.google.com/document/d/1PFW01KjK6n92VKrxl1Tj_NpHHEZG7L3tKjwoAvHNpVE/edit?usp=sharing

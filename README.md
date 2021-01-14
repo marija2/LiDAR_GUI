@@ -3,6 +3,8 @@ GUI for retrieving and viewing LiDAR data
 
 Note: The front-end design is currently not connected to the back-end. As part of my project, I worked on the front end.
 
+Files index.html and style.css were written by me.
+
 This project was done as part of the NYU Tandon Undergraduate Summer Research Program.
 
 To see the poster depicting the work done on this project please use the link below.
